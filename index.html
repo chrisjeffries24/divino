@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divino | Urban Cellar - Cefalù</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        @keyframes reveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slow-zoom { from { transform: scale(1); } to { transform: scale(1.05); } }
+        .animate-reveal { animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slow-zoom { animation: slow-zoom 20s infinite alternate ease-in-out; }
+        
+        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d6d3d1; overflow-x: hidden; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .text-gold { color: #d97706; }
+        
+        .scroll-reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .scroll-reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-stone-950">
+
+    <div id="loader" class="fixed inset-0 z-[100] flex items-center justify-center bg-stone-950 transition-opacity duration-1000">
+        <div class="text-amber-600 text-2xl tracking-[0.3em] uppercase animate-pulse">Divino</div>
+    </div>
+
+    <nav class="fixed w-full z-50 p-8 flex justify-between items-center bg-black">
+        <div class="flex items-center">
+            <img src="divino white.png" alt="Divino" class="h-16 md:h-20 lg:h-24">
+        </div>
+        <div class="hidden md:flex gap-12 text-xs uppercase tracking-[0.2em] text-white">
+            <a href="#philosophy" class="hover:text-amber-500 transition-colors">Philosophy</a>
+            <a href="#tasting" class="hover:text-amber-500 transition-colors">Experiences</a>
+            <a href="#cellar" class="hover:text-amber-500 transition-colors">Our Space</a>
+            <a href="#visit" class="hover:text-amber-500 transition-colors">Visit</a>
+        </div>
+    </nav>
+
+    <header class="relative h-screen flex flex-col items-center justify-center">
+          <div class="absolute inset-0 bg-black overflow-hidden">
+              <img src="cefalu1.png" 
+                 class="w-full h-full object-cover opacity-40 animate-slow-zoom" alt="Cellar Background">
+          </div>
+        <div class="relative z-10 text-center space-y-8 animate-reveal">
+              <img src="divino white.png" 
+                  class="w-96 mx-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+            <p class="text-stone-300 italic text-xl tracking-widest">Sicily's Premier Urban Cellar & Tasting Room</p>
+            <a href="#tasting" class="inline-block px-8 py-4 bg-transparent border border-white text-white font-semibold uppercase tracking-widest hover:bg-white hover:text-black transition-all">Begin your journey</a>
+        </div>
+    </header>
+
+    <section id="video" class="py-20 bg-black">
+        <div class="max-w-5xl mx-auto px-6">
+            <video src="v1.mp4" autoplay muted loop playsinline class="w-full rounded-lg shadow-2xl">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+    <section id="philosophy" class="py-32 px-6 max-w-6xl mx-auto scroll-reveal">
+        <div class="grid md:grid-cols-2 gap-24 items-center">
+            <div class="space-y-6">
+                <span class="text-amber-600 uppercase text-xs tracking-[0.3em]">The Vision</span>
+                <h2 class="text-5xl leading-tight">Where Etna Meets the Sea</h2>
+                <p class="leading-relaxed text-stone-400">Divino is not merely a bar; it is an interrogation of the Sicilian soil. Our urban cellar holds the secrets of volcanic slopes and ancient coastal vines, presented in a space designed for deep contemplation.</p>
+                <p class="leading-relaxed text-stone-500 italic">"Our mission is to bridge the gap between the rugged, fertile volcanic peaks of Mount Etna and the refined, salty breeze of the Tyrrhenian coast."</p>
+            </div>
+            <div class="h-[500px] bg-stone-800 rounded-lg overflow-hidden shadow-2xl relative group">
+                <img src="https://images.unsplash.com/photo-1516594798947-e65505dbb29d?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+        </div>
+    </section>
+
+    <section id="tasting" class="py-32 bg-stone-900 scroll-reveal">
+        <div class="max-w-6xl mx-auto px-6 mb-20 text-center">
+            <h2 class="text-5xl mb-4">Tasting Journeys</h2>
+            <p class="text-amber-600 uppercase tracking-[0.2em] text-xs">Curated flights for the discerning palate.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass p-10 group hover:border-amber-600 transition-all duration-500">
+                <div class="text-4xl mb-6">🌋</div>
+                <h3 class="text-2xl mb-2">Volcanic Soul</h3>
+                <p class="text-sm text-stone-500 mb-6">A deep dive into Etna’s basaltic terroirs. Taste the ash, the height, and the age.</p>
+                <div class="text-amber-600 font-bold">€85 / person</div>
+            </div>
+            <div class="glass p-10 group hover:border-amber-600 transition-all duration-500">
+                <div class="text-4xl mb-6">🍷</div>
+                <h3 class="text-2xl mb-2">Heritage Reds</h3>
+                <p class="text-sm text-stone-500 mb-6">Sun-drenched Nero d’Avola and Cerasuolo, honoring the ancient Mediterranean traditions.</p>
+                <div class="text-amber-600 font-bold">€65 / person</div>
+            </div>
+            <div class="glass p-10 group hover:border-amber-600 transition-all duration-500">
+                <div class="text-4xl mb-6">🌊</div>
+                <h3 class="text-2xl mb-2">Coastal Crisp</h3>
+                <p class="text-sm text-stone-500 mb-6">Refreshment from the shores. Grillo, Zibibbo, and salty notes of the northern coast.</p>
+                <div class="text-amber-600 font-bold">€55 / person</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cellar" class="py-32 px-6 max-w-7xl mx-auto scroll-reveal">
+        <div class="mb-16">
+            <h2 class="text-5xl mb-4">The Urban Cellar</h2>
+            <p class="text-stone-500 max-w-2xl">Step inside our sanctuary in the heart of Cefalù. Designed with raw basalt and warm Mediterranean oak, our cellar provides the perfect quiet atmosphere for discovery.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-[600px]">
+            <div class="col-span-2 row-span-2 bg-stone-800 rounded-lg overflow-hidden">
+                <img src="12.webp" class="w-full h-full object-cover">
+            </div>
+            <div class="bg-stone-800 rounded-lg overflow-hidden">
+                <img src="13.webp" class="w-full h-full object-cover">
+            </div>
+            <div class="bg-stone-800 rounded-lg overflow-hidden">
+                <img src="14.webp" class="w-full h-full object-cover">
+            </div>
+            <div class="bg-stone-800 rounded-lg overflow-hidden">
+                <img src="12.webp" class="w-full h-full object-cover">
+            </div>
+            <div class="bg-stone-800 rounded-lg overflow-hidden">
+                <img src="13.webp" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </section>
+
+    <section id="visit" class="py-32 bg-stone-900 scroll-reveal">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-5xl mb-12">Plan Your Visit</h2>
+            <div class="glass p-12 text-left grid md:grid-cols-2 gap-12">
+                <div class="space-y-4">
+                    <h4 class="text-xl uppercase tracking-widest text-amber-600">Location</h4>
+                    <p class="text-stone-400">
+                        Via Gibilmanna, 16<br>
+                        90015 Cefalù PA, Italy
+                    </p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Via+Gibilmanna,16,90015+Cefalù+PA,Italy" 
+                       target="_blank" class="block text-amber-500 hover:text-white underline transition-all text-sm uppercase tracking-widest mt-2">Get Directions</a>
+                    
+                    <h4 class="text-xl uppercase tracking-widest text-amber-600 pt-6">Contact</h4>
+                    <p class="text-stone-400">
+                        <a href="tel:+393358426107" class="hover:text-amber-500 transition-colors">+39 335 842 6107</a><br>
+                        <a href="https://divinocefalu.com" class="hover:text-amber-500 transition-colors">divinocefalu.com</a>
+                    </p>
+                    
+                    <h4 class="text-xl uppercase tracking-widest text-amber-600 pt-6">Hours</h4>
+                    <p class="text-stone-400">Daily: 16:00 - 21:00</p>
+                </div>
+                <form class="space-y-4">
+                    <input type="text" placeholder="Your Name" class="w-full bg-stone-950 border border-stone-800 p-4 focus:border-amber-600 outline-none text-white">
+                    <input type="email" placeholder="Your Email" class="w-full bg-stone-950 border border-stone-800 p-4 focus:border-amber-600 outline-none text-white">
+                    <textarea placeholder="Special Requests" class="w-full bg-stone-950 border border-stone-800 p-4 h-24 focus:border-amber-600 outline-none text-white"></textarea>
+                    <button class="w-full py-4 bg-amber-600 hover:bg-amber-700 text-white uppercase tracking-widest font-bold transition-all">Request Information</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center text-stone-600 text-xs uppercase tracking-widest">
+        &copy; 2026 Divino Urban Cellar Cefalù. Designed by Digital Atelier.
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
