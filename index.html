@@ -33,6 +33,25 @@
         .custom-leaflet-icon-alt .pin-label { position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding: 0.45rem 0.9rem; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; color: #86efac; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22); }
         .hero-logo-glow { animation: logoGlow 3s ease-in-out infinite alternate; }
         .hero-stack > * + * { margin-top: 10px; }
+        .cellar-gallery-wrap { display: flex; gap: 12px; min-height: clamp(420px, 48vh, 640px); width: 100%; overflow: hidden; border-radius: 1.5rem; }
+        .cellar-gallery-wrap .item { position: relative; flex: 1 1 0; min-width: 0; background-size: cover; background-position: center; border: none; padding: 0; cursor: pointer; transition: flex 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s ease; outline: none; }
+        .cellar-gallery-wrap .item::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.62)); opacity: 0; transition: opacity 0.35s ease; }
+        .cellar-gallery-wrap .item:hover::before { opacity: 1; }
+        .cellar-gallery-wrap .item:hover { flex: 4 1 0; transform: scale(1.02); }
+        .cellar-gallery-wrap .item .gallery-label { position: absolute; left: 1.5rem; bottom: 1.5rem; z-index: 1; color: #f8fafc; text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; line-height: 1.3; }
+        .cellar-gallery-wrap .item .gallery-cover { position: absolute; inset: 0; background: rgba(0,0,0,0.18); transition: background 0.35s ease; }
+        .cellar-gallery-wrap .item:hover .gallery-cover { background: rgba(0,0,0,0.05); }
+        @media (max-width: 767px) {
+            .cellar-gallery-wrap .item .gallery-label { display: none; }
+        }
+        .lightbox-overlay { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.92); opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+        .lightbox-overlay.open { opacity: 1; pointer-events: auto; }
+        .lightbox-content { position: relative; width: min(92vw, 900px); max-height: min(92vh, 900px); transform: scale(0.95); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+        .lightbox-overlay.open .lightbox-content { transform: scale(1); }
+        .lightbox-image { width: 100%; height: auto; max-height: calc(92vh - 4rem); object-fit: contain; border-radius: 1.5rem; box-shadow: 0 30px 90px rgba(0,0,0,0.5); }
+        .lightbox-caption { margin-top: 1rem; text-align: center; color: #e5e7eb; font-size: 0.95rem; letter-spacing: 0.03em; }
+        .lightbox-close { position: absolute; top: -1rem; right: -1rem; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(0,0,0,0.55); color: #fff; cursor: pointer; transition: transform 0.2s ease, background 0.2s ease; }
+        .lightbox-close:hover { transform: scale(1.05); background: rgba(255,255,255,0.12); }
         @keyframes logoGlow { from { filter: drop-shadow(0 0 12px rgba(255,255,255,0.25)); } to { filter: drop-shadow(0 0 26px rgba(255,255,255,0.45)); } }
     </style>
 </head>
@@ -42,15 +61,29 @@
         <div class="text-amber-600 text-2xl tracking-[0.3em] uppercase animate-pulse">Divino</div>
     </div>
 
-    <nav class="fixed w-full z-50 px-4 sm:px-6 py-6 sm:py-8 flex justify-between items-center bg-black">
-        <div class="flex items-center">
-            <img src="divino white.png" alt="Divino" class="h-8 md:h-10 lg:h-12">
+    <nav class="fixed w-full z-50 px-4 sm:px-6 py-6 sm:py-8 bg-black">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="divino white.png" alt="Divino" class="h-8 md:h-10 lg:h-12">
+            </div>
+            <button id="mobile-menu-button" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden inline-flex items-center justify-center p-2 rounded-md border border-white/20 text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <span class="sr-only">Open mobile menu</span>
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div class="hidden md:flex gap-12 text-xs uppercase tracking-[0.2em] text-white">
+                <a href="#philosophy" class="hover:text-amber-500 transition-colors">Philosophy</a>
+                <a href="#tasting" class="hover:text-amber-500 transition-colors">Experiences</a>
+                <a href="#cellar" class="hover:text-amber-500 transition-colors">Our Space</a>
+                <a href="#visit" class="hover:text-amber-500 transition-colors">Visit</a>
+            </div>
         </div>
-        <div class="hidden md:flex gap-12 text-xs uppercase tracking-[0.2em] text-white">
-            <a href="#philosophy" class="hover:text-amber-500 transition-colors">Philosophy</a>
-            <a href="#tasting" class="hover:text-amber-500 transition-colors">Experiences</a>
-            <a href="#cellar" class="hover:text-amber-500 transition-colors">Our Space</a>
-            <a href="#visit" class="hover:text-amber-500 transition-colors">Visit</a>
+        <div id="mobile-menu" class="hidden md:hidden absolute inset-x-0 top-full bg-black/95 backdrop-blur-xl border-t border-white/10 shadow-2xl">
+            <div class="flex flex-col px-6 py-4 gap-4 text-sm uppercase tracking-[0.2em] text-white">
+                <a href="#philosophy" class="hover:text-amber-500 transition-colors">Philosophy</a>
+                <a href="#tasting" class="hover:text-amber-500 transition-colors">Experiences</a>
+                <a href="#cellar" class="hover:text-amber-500 transition-colors">Our Space</a>
+                <a href="#visit" class="hover:text-amber-500 transition-colors">Visit</a>
+            </div>
         </div>
     </nav>
 
@@ -138,22 +171,27 @@
             <h2 class="text-5xl mb-4">The Urban Cellar</h2>
             <p class="text-stone-500 max-w-2xl">Step inside our sanctuary in the heart of Cefalù. Designed with raw basalt and warm Mediterranean oak, our cellar provides the perfect quiet atmosphere for discovery.</p>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-[600px]">
-            <div class="col-span-2 row-span-2 bg-stone-800 rounded-lg overflow-hidden">
-                <img src="d1.avif" class="w-full h-full object-cover">
-            </div>
-            <div class="bg-stone-800 rounded-lg overflow-hidden">
-                <img src="d2.avif" class="w-full h-full object-cover">
-            </div>
-            <div class="bg-stone-800 rounded-lg overflow-hidden">
-                <img src="d3.avif" class="w-full h-full object-cover">
-            </div>
-            <div class="bg-stone-800 rounded-lg overflow-hidden">
-                <img src="14.webp" class="w-full h-full object-cover">
-            </div>
-            <div class="bg-stone-800 rounded-lg overflow-hidden">
-                <img src="13.webp" class="w-full h-full object-cover">
-            </div>
+        <div class="cellar-gallery-wrap" aria-label="Urban cellar gallery">
+            <button type="button" class="item item-1 lightbox-trigger" style="background-image:url('d1.avif');" data-src="d1.avif" data-caption="Main cellar view" aria-label="View main cellar image">
+                <div class="gallery-cover"></div>
+                <span class="gallery-label">Main cellar view</span>
+            </button>
+            <button type="button" class="item item-2 lightbox-trigger" style="background-image:url('d2.avif');" data-src="d2.avif" data-caption="Cellar tasting corner" aria-label="View tasting corner image">
+                <div class="gallery-cover"></div>
+                <span class="gallery-label">Tasting corner</span>
+            </button>
+            <button type="button" class="item item-3 lightbox-trigger" style="background-image:url('d3.avif');" data-src="d3.avif" data-caption="Stone and glass cellar" aria-label="View stone and glass cellar image">
+                <div class="gallery-cover"></div>
+                <span class="gallery-label">Stone & glass cellar</span>
+            </button>
+            <button type="button" class="item item-4 lightbox-trigger" style="background-image:url('14.webp');" data-src="14.webp" data-caption="Rustic tasting alcove" aria-label="View rustic tasting alcove image">
+                <div class="gallery-cover"></div>
+                <span class="gallery-label">Rustic alcove</span>
+            </button>
+            <button type="button" class="item item-5 lightbox-trigger" style="background-image:url('13.webp');" data-src="13.webp" data-caption="Curated wine displays" aria-label="View curated wine displays image">
+                <div class="gallery-cover"></div>
+                <span class="gallery-label">Wine display</span>
+            </button>
         </div>
     </section>
 
@@ -237,8 +275,60 @@
         &copy; 2026 Divino Urban Cellar Cefalù. Designed by Digital Atelier.
     </footer>
 
+    <div id="lightbox-overlay" class="lightbox-overlay" aria-hidden="true">
+        <div class="lightbox-content">
+            <button id="lightbox-close" type="button" class="lightbox-close" aria-label="Close image viewer">×</button>
+            <img id="lightbox-image" class="lightbox-image" src="" alt="Expanded cellar image">
+            <p id="lightbox-caption" class="lightbox-caption"></p>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const lightboxOverlay = document.getElementById('lightbox-overlay');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        const openLightbox = (src, caption) => {
+            lightboxImage.src = src;
+            lightboxImage.alt = caption || 'Cellar image preview';
+            lightboxCaption.textContent = caption || '';
+            lightboxOverlay.classList.add('open');
+            lightboxOverlay.setAttribute('aria-hidden', 'false');
+        };
+
+        const closeLightbox = () => {
+            lightboxOverlay.classList.remove('open');
+            lightboxOverlay.setAttribute('aria-hidden', 'true');
+            lightboxImage.src = '';
+            lightboxCaption.textContent = '';
+        };
+
+        document.querySelectorAll('.lightbox-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                openLightbox(trigger.dataset.src, trigger.dataset.caption);
+            });
+        });
+
+        lightboxClose?.addEventListener('click', closeLightbox);
+        lightboxOverlay?.addEventListener('click', (event) => {
+            if (event.target === lightboxOverlay) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && lightboxOverlay.classList.contains('open')) {
+                closeLightbox();
+            }
+        });
+
+        mobileMenuButton?.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', String(!isHidden));
+        });
+
         window.addEventListener('load', () => {
             document.getElementById('loader').style.opacity = '0';
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
