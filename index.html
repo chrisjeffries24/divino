@@ -6,6 +6,7 @@
     <title>Divino | Urban Cellar - Cefalù</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         @keyframes reveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slow-zoom { from { transform: scale(1); } to { transform: scale(1.05); } }
@@ -20,6 +21,16 @@
         
         .scroll-reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
         .scroll-reveal.active { opacity: 1; transform: translateY(0); }
+        
+        #leaflet-map { height: 500px; width: 100%; border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.12); }
+        .custom-leaflet-icon { position: relative; width: 160px; height: 110px; pointer-events: none; }
+        .custom-leaflet-icon .pin { position: absolute; left: 50%; bottom: 0; width: 46px; height: 46px; background: radial-gradient(circle at 35% 30%, #fcd34d, #f59e0b 60%, #b45309); border-radius: 50% 50% 50% 0; transform: translateX(-50%) rotate(-45deg); box-shadow: 0 0 20px rgba(245,158,11,0.45); }
+        .custom-leaflet-icon .pin::after { content: ''; position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; background: #fff; border-radius: 50%; transform: translate(-50%, -50%); }
+        .custom-leaflet-icon .pin-label { position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding: 0.45rem 0.9rem; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; color: #fbbf24; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22); }
+        .custom-leaflet-icon-alt { position: relative; width: 160px; height: 110px; pointer-events: none; }
+        .custom-leaflet-icon-alt .pin { position: absolute; left: 50%; bottom: 0; width: 46px; height: 46px; background: radial-gradient(circle at 35% 30%, #34d399, #10b981 60%, #047857); border-radius: 50% 50% 50% 0; transform: translateX(-50%) rotate(-45deg); box-shadow: 0 0 20px rgba(16,185,129,0.35); }
+        .custom-leaflet-icon-alt .pin::after { content: ''; position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; background: #fff; border-radius: 50%; transform: translate(-50%, -50%); }
+        .custom-leaflet-icon-alt .pin-label { position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding: 0.45rem 0.9rem; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; color: #86efac; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22); }
     </style>
 </head>
 <body class="bg-stone-950">
@@ -53,14 +64,6 @@
         </div>
     </header>
 
-    <section id="video" class="py-20 bg-black">
-        <div class="max-w-5xl mx-auto px-6">
-            <video src="v1.mp4" autoplay muted loop playsinline class="w-full rounded-lg shadow-2xl">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    </section>
-
     <section id="philosophy" class="py-32 px-6 max-w-6xl mx-auto scroll-reveal">
         <div class="grid md:grid-cols-2 gap-24 items-center">
             <div class="space-y-6">
@@ -70,7 +73,7 @@
                 <p class="leading-relaxed text-stone-500 italic">"Our mission is to bridge the gap between the rugged, fertile volcanic peaks of Mount Etna and the refined, salty breeze of the Tyrrhenian coast."</p>
             </div>
             <div class="h-[500px] bg-stone-800 rounded-lg overflow-hidden shadow-2xl relative group">
-                <img src="https://images.unsplash.com/photo-1516594798947-e65505dbb29d?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <video src="v1.mp4" autoplay muted loop playsinline class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></video>
             </div>
         </div>
     </section>
@@ -102,6 +105,32 @@
         </div>
     </section>
 
+    <section id="faq" class="py-32 bg-black scroll-reveal">
+        <div class="max-w-6xl mx-auto px-6 mb-16 text-center">
+            <span class="text-amber-600 uppercase text-xs tracking-[0.3em]">Tasting FAQ</span>
+            <h2 class="text-5xl mt-4">Questions About Tasting & Wine</h2>
+            <p class="text-stone-400 max-w-3xl mx-auto mt-4">Explore our most common questions about the tasting experience, the wines we serve, and how Sicily’s terroirs shape every glass.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 grid gap-8 lg:grid-cols-2">
+            <div class="glass p-10">
+                <h3 class="text-2xl mb-4">What should I expect during a tasting?</h3>
+                <p class="text-stone-400">Expect a curated journey through Sicilian terroirs. Our tastings focus on volcanic Etna reds, heritage Nero d’Avola, and crisp coastal whites with a strong sense of place.</p>
+            </div>
+            <div class="glass p-10">
+                <h3 class="text-2xl mb-4">How do you choose the wines for each flight?</h3>
+                <p class="text-stone-400">We select wines that tell a story: the ash and minerality of Etna, the warm fruit of the inland valleys, and the saline freshness from Cefalù’s nearby shorelines.</p>
+            </div>
+            <div class="glass p-10">
+                <h3 class="text-2xl mb-4">Can I taste both red and white wines?</h3>
+                <p class="text-stone-400">Yes. Our tasting experiences are designed for balance, letting you compare the intensity of reds with the crispness of coastal whites and aromatic Sicilian rosés.</p>
+            </div>
+            <div class="glass p-10">
+                <h3 class="text-2xl mb-4">What makes Sicilian wine unique?</h3>
+                <p class="text-stone-400">Sicilian wine combines volcanic energy, Mediterranean sunlight, and ancient grape varieties. At Divino, you’ll taste the contrast between Etna’s mineral depth and the sea-salt brightness of the coast.</p>
+            </div>
+        </div>
+    </section>
+
     <section id="cellar" class="py-32 px-6 max-w-7xl mx-auto scroll-reveal">
         <div class="mb-16">
             <h2 class="text-5xl mb-4">The Urban Cellar</h2>
@@ -126,8 +155,52 @@
         </div>
     </section>
 
+    <section id="shop" class="py-32 px-6 bg-stone-950 scroll-reveal">
+        <div class="max-w-6xl mx-auto mb-16 text-center">
+            <span class="text-amber-600 uppercase text-xs tracking-[0.3em]">Cellar Shop</span>
+            <h2 class="text-5xl mt-4">Wines Available for Purchase</h2>
+            <p class="text-stone-400 max-w-3xl mx-auto mt-4">Bring the flavors of Divino home with curated bottles from our urban cellar. Discover the wines that define our tasting experiences.</p>
+        </div>
+        <div class="max-w-7xl mx-auto grid gap-8 lg:grid-cols-4">
+            <div class="glass p-8 border border-stone-800 hover:border-amber-600 transition-all duration-500">
+                <h3 class="text-2xl mb-3">Etna Rosso</h3>
+                <p class="text-stone-400 text-sm mb-6">Aged Nero d’Avola from the volcanic slopes of Etna, bright with red fruit and volcanic minerality.</p>
+                <div class="text-amber-600 font-bold">€32 / bottle</div>
+            </div>
+            <div class="glass p-8 border border-stone-800 hover:border-amber-600 transition-all duration-500">
+                <h3 class="text-2xl mb-3">Coastal Bianco</h3>
+                <p class="text-stone-400 text-sm mb-6">A crisp Grillo blend with saline notes, citrus peel, and a cool Mediterranean finish.</p>
+                <div class="text-amber-600 font-bold">€28 / bottle</div>
+            </div>
+            <div class="glass p-8 border border-stone-800 hover:border-amber-600 transition-all duration-500">
+                <h3 class="text-2xl mb-3">Heritage Nero</h3>
+                <p class="text-stone-400 text-sm mb-6">Sun-soaked Nero d’Avola with dark cherry intensity, leather spice, and a structured palate.</p>
+                <div class="text-amber-600 font-bold">€35 / bottle</div>
+            </div>
+            <div class="glass p-8 border border-stone-800 hover:border-amber-600 transition-all duration-500">
+                <h3 class="text-2xl mb-3">Zibibbo & Friends</h3>
+                <p class="text-stone-400 text-sm mb-6">A fragrant blend of Zibibbo and local aromatics, ripe with orange blossom and seaside freshness.</p>
+                <div class="text-amber-600 font-bold">€30 / bottle</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="map" class="py-32 px-6 scroll-reveal">
+        <div class="max-w-6xl mx-auto mb-16 text-center">
+            <span class="text-amber-600 uppercase text-xs tracking-[0.3em]">Local Vineyards</span>
+            <h2 class="text-5xl mt-4">Cefalù’s Nearby Vineyards</h2>
+            <p class="text-stone-400 max-w-3xl mx-auto mt-4">Explore an open-source interactive map centered on Cefalù, Sicily, with a marker at the town center.</p>
+        </div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass rounded-3xl border border-stone-800 shadow-2xl overflow-hidden p-8">
+                <div id="leaflet-map" class="rounded-3xl"></div>
+            </div>
+        </div>
+    </section>
+
     <section id="visit" class="py-32 bg-stone-900 scroll-reveal">
         <div class="max-w-4xl mx-auto px-6 text-center">
+            <img src="white divino.png" alt="Divino" class="mx-auto mb-10" style="height:240px; width:auto;">
             <h2 class="text-5xl mb-12">Plan Your Visit</h2>
             <div class="glass p-12 text-left grid md:grid-cols-2 gap-12">
                 <div class="space-y-4">
@@ -162,10 +235,77 @@
         &copy; 2026 Divino Urban Cellar Cefalù. Designed by Digital Atelier.
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         window.addEventListener('load', () => {
             document.getElementById('loader').style.opacity = '0';
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
+
+            const map = L.map('leaflet-map').setView([38.0341, 14.0170], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const divinoIcon = L.divIcon({
+                html: '<div class="custom-leaflet-icon"><div class="pin-label">Divino</div><div class="pin"></div></div>',
+                className: '',
+                iconSize: [160, 110],
+                iconAnchor: [80, 100],
+                popupAnchor: [0, -110]
+            });
+
+            const partnerIcon = L.divIcon({
+                html: '<div class="custom-leaflet-icon-alt"><div class="pin"></div></div>',
+                className: '',
+                iconSize: [160, 110],
+                iconAnchor: [80, 100],
+                popupAnchor: [0, -110]
+            });
+
+            L.marker([38.0341, 14.0170], { icon: divinoIcon }).addTo(map)
+                .bindPopup('<strong>Divino</strong><br>Via Gibilmanna, 16<br>90015 Cefalù')
+                .openPopup();
+
+            const partnerLocations = [
+                {
+                    coords: [38.0368, 14.0234],
+                    title: 'Relais Santa Anastasia',
+                    description: 'Farm · Open',
+                    address: 'Contrada Santa Anastasia, 90013 Castelbuono PA, Italy'
+                },
+                {
+                    coords: [37.6620, 14.0510],
+                    title: 'Tasca D\'Almerita - Regaleali Estate',
+                    description: 'Winery · Closed · Opens 8:30 AM Tue',
+                    address: 'Contrada Regaleali, 90020 Sclafani Bagni PA, Italy'
+                },
+                {
+                    coords: [37.6020, 14.9780],
+                    title: 'TENUTA PAPALE',
+                    description: 'Winery · Open',
+                    address: 'SP160, 95032 Belpasso CT, Italy'
+                },
+                {
+                    coords: [38.0345, 14.0195],
+                    title: 'Le Petit Tonneau - Winery & Putia',
+                    description: 'Pizza restaurant · Open · Closes 2:00 AM Tue',
+                    address: 'fronte Club Med, Via della Calagrande, 90015 Cefalù PA, Italy'
+                },
+                {
+                    coords: [38.0336, 14.0190],
+                    title: 'Enoteca Le Petit Tonneau',
+                    description: 'Wine bar · Open · Closes 12:00 AM Tue',
+                    address: 'Via Vittorio Emanuele, 49, 90015 Cefalù PA, Italy'
+                }
+            ];
+
+            partnerLocations.forEach(location => {
+                L.marker(location.coords, { icon: partnerIcon }).addTo(map)
+                    .bindPopup(`<strong>${location.title}</strong><br>${location.description}<br>${location.address}`);
+            });
+
+            setTimeout(() => { map.invalidateSize(); }, 100);
         });
 
         const observer = new IntersectionObserver((entries) => {
